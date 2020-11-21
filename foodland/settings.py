@@ -68,7 +68,6 @@ TEMPLATES = [
         },
     },
 ]
-vsvavsc
 WSGI_APPLICATION = 'foodland.wsgi.application'
 
 
@@ -80,7 +79,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'foodland',
         'USER': 'postgres',
-        'PASSWORD0': '12345',
+        'PASSWORD': 'A13742301374230a',
         'HOST': 'localhost',
         'PORT': '5432',
     }
