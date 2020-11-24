@@ -139,3 +139,11 @@ STATIC_ROOT = '/static'
 
 # Define the e-mail address o manage emails on apps
 DEFAULT_FROM_EMAIL = 'hoseinnadali@yahoo.com'
+
+
+# The option GRAPH_MODELS = {} can be used in the settings file\
+# to specify default options for modeling diagrams
+GRAPH_MODELS = {
+  'all_applications': True,
+  'group_models': True,
+}
