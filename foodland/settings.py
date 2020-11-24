@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.humanize',
     'main.apps.MainConfig',
+    'django_extensions',
 ]
 
 MIDDLEWARE = [
@@ -133,6 +134,7 @@ NUMBER_GROUPING = 3
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = '/static'
 
 
 # Define the e-mail address o manage emails on apps
