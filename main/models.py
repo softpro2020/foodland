@@ -190,3 +190,42 @@ class Person(models.Model):
         verbose_name = "فرد"
 
         verbose_name_plural = "افراد"
+        
+# Define a model for Food Collection 
+# Food Collections serve to customers
+class FoodCollection(models.Model):
+
+    full_name = models.CharField(
+        db_index=True, max_length=100, null=False, blank=False, 
+        verbose_name="نام مجموعه"
+    )
+
+    guild_id = models.CharField(
+        db_index=True, max_length=12, null=False, blank=False, 
+        verbose_name="شناسه صنفی"
+    )
+
+    objects = jmodels.JManager()
+
+    expiration_date = jmodels.JDateField(
+        null=False, blank=False, verbose_name="تاریخ انقضا پروانه کسب"
+    )
+
+    collaborationRequest = models.OneToOneField(
+        "CollaborationRequest", on_delete=models.CASCADE, 
+        null=False, blank=False, verbose_name="درخواست مربوطه"
+    )
+
+    manager = models.OneToOneField(
+        "User", on_delete=models.CASCADE, null=False, blank=False, 
+        verbose_name="مدیر مجموعه"
+    )
+
+    def __str__(self):
+        return self.full_name
+
+    class Meta:
+
+        verbose_name = "مجموعه غذایی"
+
+        verbose_name_plural = "مجموعه های غذایی"
