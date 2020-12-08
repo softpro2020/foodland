@@ -145,3 +145,48 @@ class Customer(models.Model):
         verbose_name = "مشتری"
 
         verbose_name_plural = "مشتریان"
+
+# Define the Person model related to everybody in system
+class Person(models.Model):
+
+    first_name = models.CharField(
+        db_index=True, max_length=50, null=False, blank=False,
+        verbose_name="نام"
+    )
+
+    last_name = CharField(
+        db_index=True, max_length=50, null=False, blank=False,
+        verbose_name="نام خانوادگی"
+    )
+
+    national_code = models.CharField(
+        db_index=True, max_length=10, null=False, 
+        blank=False, unique=True, 
+        validators=[
+            RegexValidator(
+                regex=r"^\d{10}$", 
+                message="کد ملی باید به صورت ۱۰ رقمی وارد گردد", 
+                code="کد ملی نادرست"
+            ) 
+        ], 
+        verbose_name="کد ملی"
+    )
+
+    GENDER_CHOICES = (
+        ('مرد', 'man'),
+        ('زن', 'woman')
+    )
+
+    gender = models.CharField(
+        db_index=True, max_length=3, choices=GENDER_CHOICES, 
+        null=False, blank=False, verbose_name="جنسیت"
+    )
+
+    def __str__(self):
+        return (self.first_name, self.last_name)
+
+    class Meta:
+
+        verbose_name = "فرد"
+
+        verbose_name_plural = "افراد"
