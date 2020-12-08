@@ -86,3 +86,62 @@ class User(AbstractBaseUser, PermissionsMixin):
         verbose_name = "کاربر"
 
         verbose_name_plural = "کاربران"
+
+# Define the customer user model that has several specific field
+class Customer(models.Model):
+    
+    user = models.OneToOneField(
+        "User", on_delete=models.CASCADE , primary_key=True, 
+        null=False, blank=False, verbose_name="کاربری"
+    )
+
+    phone_number = models.CharField(
+        db_index=True, max_length=9, null=True, blank=True, 
+        validators=[
+            RegexValidator(
+                regex=r"^\d{9}$", 
+                message="شماره تماس را به صورت صحیح وارد نمایید", 
+                code="شماره تماس نادرست"
+            )
+        ], 
+        unique=True, verbose_name="شماره تماس"
+    )
+
+    province = models.CharField(
+        db_index=True, max_length=50, null=True, blank=True, 
+        validators=[
+            RegexValidator(
+                regex=r("^[\s\u0621-\u0628\u062A-\u063A"
+                "\u0641-\u0642\u0644-\u0648"
+                "\u064E-\u0651\u0655\u067E\u0686\u0698"
+                "\u06A9\u06AF\u06BE\u06CC]{3, 50}$"), 
+                message="استان را به صورت صحیح وارد نمایید", 
+                code="استان نامعتبر", 
+            )
+        ], 
+        verbose_name="استان"
+    )
+
+    city = models.CharField(
+        db_index=True, max_length=50, null=True, blank=True, 
+        validators=[
+            RegexValidator(
+                regex=r("^[\s\u0621-\u0628\u062A-\u063A"
+                "\u0641-\u0642\u0644-\u0648"
+                "\u064E-\u0651\u0655\u067E\u0686\u0698"
+                "\u06A9\u06AF\u06BE\u06CC]{3, 50}$"), 
+                message="شهر را به صورت صحیح وارد نمایید", 
+                code="شهر نامعتبر", 
+            )
+        ],
+        verbose_name="شهر"
+    )
+
+    def __str__(self):
+        return self.user.username
+
+    class Meta:
+
+        verbose_name = "مشتری"
+
+        verbose_name_plural = "مشتریان"
