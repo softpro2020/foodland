@@ -127,19 +127,14 @@ USE_THOUSAND_SEPARATOR = True
 
 NUMBER_GROUPING = 3
 
-
-
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
 STATIC_ROOT = '/static'
 
-
 # Define the e-mail address o manage emails on apps
 DEFAULT_FROM_EMAIL = 'hoseinnadali@yahoo.com'
-
 
 # The option GRAPH_MODELS = {} can be used in the settings file\
 # to specify default options for modeling diagrams
@@ -147,3 +142,6 @@ GRAPH_MODELS = {
   'all_applications': True,
   'group_models': True,
 }
+
+# Define the user model that is authenticated in project
+AUTH_USER_MODEL = "main.User"
