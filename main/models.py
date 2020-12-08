@@ -154,7 +154,7 @@ class Person(models.Model):
         verbose_name="نام"
     )
 
-    last_name = CharField(
+    last_name = models.CharField(
         db_index=True, max_length=50, null=False, blank=False,
         verbose_name="نام خانوادگی"
     )
