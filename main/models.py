@@ -358,3 +358,60 @@ class Branch(models.Model):
         verbose_name = "شعبه"
 
         verbose_name_plural = "شعب"
+
+# Create the Call Contact model
+# Call Contact is for record the contacts from every branch
+
+
+class CallContact(models.Model):
+
+    branch = models.OneToOneField(
+        "Branch", on_delete=models.CASCADE,
+        null=False, blank=False, unique=True,
+        verbose_name="شعبه مورد نظر"
+    )
+
+    phoneNumber1 = models.CharField(
+        db_index=True, max_length=8, null=False, blank=False,
+        validators=[
+            RegexValidator(
+                regex=r"^\d{8}$",
+                message="شماره تماس به صورت صحیح وارد گردد",
+                code="شماره تماس نامعتبر"
+            )
+        ],
+        unique=True, verbose_name="شماره تماس ۱"
+    )
+
+    phoneNumber2 = models.CharField(
+        db_index=True, max_length=8, null=True, blank=True,
+        validators=[
+            RegexValidator(
+                regex=r"^\d{8}$",
+                message="شماره تماس به صورت صحیح وارد گردد",
+                code="شماره تماس نامعتبر"
+            )
+        ],
+        unique=True, verbose_name="شماره تماس 2"
+    )
+
+    mobileNumber = models.CharField(
+        db_index=True, max_length=9, null=True, blank=True,
+        validators=[
+            RegexValidator(
+                regex=r"^\d{9}$",
+                message="شماره موبایل را به صورت صحیح وارد نمایید",
+                code="شماره موبایل نادرست"
+            )
+        ],
+        unique=True, verbose_name="شماره موبایل"
+    )
+
+    def __str__(self):
+        return self.branch.name
+
+    class Meta:
+
+        verbose_name = "اطلاعات تماس"
+
+        verbose_name_plural = "اطلاعات تماس"
