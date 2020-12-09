@@ -1,4 +1,3 @@
-from enum import unique
 from django.db import models
 from django.contrib.auth.models import (
     AbstractBaseUser, PermissionsMixin
@@ -12,11 +11,13 @@ from django.core.validators import RegexValidator
 
 # Create custom User model for this application
 # this user model inheritence from AbstractBaseUser model
-# that have their abstract behavior and attributes 
+# that have their abstract behavior and attributes
+
+
 class User(AbstractBaseUser, PermissionsMixin):
 
     username = models.CharField(
-        db_index=True, max_length=100, null=False, blank=False, 
+        db_index=True, max_length=100, null=False, blank=False,
         unique=True, verbose_name="نام کاربری"
     )
 
@@ -42,24 +43,24 @@ class User(AbstractBaseUser, PermissionsMixin):
     )
 
     user_type = models.PositiveSmallIntegerField(
-        choices=USER_TYPE_CHOICES, null=False, blank=True, 
+        choices=USER_TYPE_CHOICES, null=False, blank=True,
         verbose_name="نوع کاربری"
     )
 
     person = models.OneToOneField(
-        "Person", on_delete=models.CASCADE, null=True, blank=True, 
+        "Person", on_delete=models.CASCADE, null=True, blank=True,
         verbose_name="فرد مربوطه"
     )
 
     objects = jmodels.JManager()
 
     date_joined = jmodels.jDateField(
-        auto_now_add=True, editable=False,  
+        auto_now_add=True, editable=False,
         null=False, blank=True, verbose_name="تاریخ ثبت"
     )
 
     last_login = jmodels.JDateTimeField(
-        defualt=jdatetime.datetime.now, 
+        defualt=jdatetime.datetime.now,
         null=False, blank=True, verbose_name="اخرین ورود"
     )
 
@@ -95,56 +96,58 @@ class User(AbstractBaseUser, PermissionsMixin):
         return self.username
 
     class Meta:
-        
+
         verbose_name = "کاربر"
 
         verbose_name_plural = "کاربران"
 
 # Define the customer user model that has several specific field
+
+
 class Customer(models.Model):
-    
+
     user = models.OneToOneField(
-        "User", on_delete=models.CASCADE , primary_key=True, 
+        "User", on_delete=models.CASCADE, primary_key=True,
         null=False, blank=False, verbose_name="کاربری"
     )
 
     phone_number = models.CharField(
-        db_index=True, max_length=9, null=True, blank=True, 
+        db_index=True, max_length=9, null=True, blank=True,
         validators=[
             RegexValidator(
-                regex=r"^\d{9}$", 
-                message="شماره تماس را به صورت صحیح وارد نمایید", 
+                regex=r"^\d{9}$",
+                message="شماره تماس را به صورت صحیح وارد نمایید",
                 code="شماره تماس نادرست"
             )
-        ], 
+        ],
         unique=True, verbose_name="شماره تماس"
     )
 
     province = models.CharField(
-        db_index=True, max_length=50, null=True, blank=True, 
+        db_index=True, max_length=50, null=True, blank=True,
         validators=[
             RegexValidator(
                 regex=r("^[\s\u0621-\u0628\u062A-\u063A"
-                "\u0641-\u0642\u0644-\u0648"
-                "\u064E-\u0651\u0655\u067E\u0686\u0698"
-                "\u06A9\u06AF\u06BE\u06CC]{3, 50}$"), 
-                message="استان را به صورت صحیح وارد نمایید", 
-                code="استان نامعتبر", 
+                        "\u0641-\u0642\u0644-\u0648"
+                        "\u064E-\u0651\u0655\u067E\u0686\u0698"
+                        "\u06A9\u06AF\u06BE\u06CC]{3, 50}$"),
+                message="استان را به صورت صحیح وارد نمایید",
+                code="استان نامعتبر",
             )
-        ], 
+        ],
         verbose_name="استان"
     )
 
     city = models.CharField(
-        db_index=True, max_length=50, null=True, blank=True, 
+        db_index=True, max_length=50, null=True, blank=True,
         validators=[
             RegexValidator(
                 regex=r("^[\s\u0621-\u0628\u062A-\u063A"
-                "\u0641-\u0642\u0644-\u0648"
-                "\u064E-\u0651\u0655\u067E\u0686\u0698"
-                "\u06A9\u06AF\u06BE\u06CC]{3, 50}$"), 
-                message="شهر را به صورت صحیح وارد نمایید", 
-                code="شهر نامعتبر", 
+                        "\u0641-\u0642\u0644-\u0648"
+                        "\u064E-\u0651\u0655\u067E\u0686\u0698"
+                        "\u06A9\u06AF\u06BE\u06CC]{3, 50}$"),
+                message="شهر را به صورت صحیح وارد نمایید",
+                code="شهر نامعتبر",
             )
         ],
         verbose_name="شهر"
@@ -160,6 +163,8 @@ class Customer(models.Model):
         verbose_name_plural = "مشتریان"
 
 # Define the Person model related to everybody in system
+
+
 class Person(models.Model):
 
     first_name = models.CharField(
@@ -173,15 +178,15 @@ class Person(models.Model):
     )
 
     national_code = models.CharField(
-        db_index=True, max_length=10, null=False, 
-        blank=False, unique=True, 
+        db_index=True, max_length=10, null=False,
+        blank=False, unique=True,
         validators=[
             RegexValidator(
-                regex=r"^\d{10}$", 
-                message="کد ملی باید به صورت ۱۰ رقمی وارد گردد", 
+                regex=r"^\d{10}$",
+                message="کد ملی باید به صورت ۱۰ رقمی وارد گردد",
                 code="کد ملی نادرست"
-            ) 
-        ], 
+            )
+        ],
         verbose_name="کد ملی"
     )
 
@@ -191,7 +196,7 @@ class Person(models.Model):
     )
 
     gender = models.CharField(
-        db_index=True, max_length=3, choices=GENDER_CHOICES, 
+        db_index=True, max_length=3, choices=GENDER_CHOICES,
         null=False, blank=False, verbose_name="جنسیت"
     )
 
@@ -203,25 +208,27 @@ class Person(models.Model):
         verbose_name = "فرد"
 
         verbose_name_plural = "افراد"
-        
-# Define a model for Food Collection 
+
+# Define a model for Food Collection
 # Food Collections serve to customers
+
+
 class FoodCollection(models.Model):
 
     full_name = models.CharField(
-        db_index=True, max_length=100, null=False, blank=False, 
+        db_index=True, max_length=100, null=False, blank=False,
         verbose_name="نام مجموعه"
     )
 
     guild_id = models.CharField(
-        db_index=True, max_length=12, null=False, blank=False, 
+        db_index=True, max_length=12, null=False, blank=False,
         validators=[
             RegexValidator(
-                regex=r"^\d{12}$", 
-                message="شناسه صنفی را بصورت درست وارد نمایید", 
+                regex=r"^\d{12}$",
+                message="شناسه صنفی را بصورت درست وارد نمایید",
                 code="شناسه صنفی نامعتبر"
             )
-        ], 
+        ],
         verbose_name="شناسه صنفی"
     )
 
@@ -232,12 +239,12 @@ class FoodCollection(models.Model):
     )
 
     collaborationRequest = models.OneToOneField(
-        "CollaborationRequest", on_delete=models.CASCADE, 
+        "CollaborationRequest", on_delete=models.CASCADE,
         null=False, blank=False, verbose_name="درخواست مربوطه"
     )
 
     manager = models.OneToOneField(
-        "User", on_delete=models.CASCADE, null=False, blank=False, 
+        "User", on_delete=models.CASCADE, null=False, blank=False,
         verbose_name="مدیر مجموعه"
     )
 
@@ -251,71 +258,73 @@ class FoodCollection(models.Model):
         verbose_name_plural = "مجموعه های غذایی"
 
 # Create the Collaboration Requests model
-# this model is records from every request 
+# this model is records from every request
+
+
 class CollaborationRequest(models.Model):
 
     objects = jmodels.JManager()
 
     date = jmodels.JDateField(
-        auto_now_add=True, editable=False, 
-        null=False, blank=True, 
+        auto_now_add=True, editable=False,
+        null=False, blank=True,
         verbose_name="تاریخ درخواست"
     )
 
     applicant_firstname = models.CharField(
-        db_index=True, max_length=50, 
-        null=False, blank=False, 
+        db_index=True, max_length=50,
+        null=False, blank=False,
         verbose_name="نام متقاضی"
     )
 
     applicant_lastname = models.CharField(
-        db_index=True, max_length=50, 
-        null=False, blank=False, 
+        db_index=True, max_length=50,
+        null=False, blank=False,
         verbose_name="نام خانوادگی متقاضی"
     )
 
     applicant_nationalcode = models.CharField(
-        db_index=True, max_length=10, 
-        null=False, blank=False, unique=True, 
+        db_index=True, max_length=10,
+        null=False, blank=False, unique=True,
         validators=[
             RegexValidator(
-                regex=r"^\d{10}$", 
-                message="کد ملی متقاضی به صورت صحیح وارد شود", 
+                regex=r"^\d{10}$",
+                message="کد ملی متقاضی به صورت صحیح وارد شود",
                 code="کد ملی نادرست"
             )
-        ], 
+        ],
         verbose_name="کد ملی"
     )
 
     text = models.TextField(
-        max_length=2000, null=True, blank=True, 
+        max_length=2000, null=True, blank=True,
         verbose_name="متن درخواست"
     )
 
     fc_name = models.CharField(
-        db_index=True, max_length=50, 
-        null=False, blank=False, 
+        db_index=True, max_length=50,
+        null=False, blank=False,
         verbose_name="نام مجموعه غذایی"
     )
 
     guild_id = models.CharField(
-        db_index=True, max_length=12, null=False, blank=False, 
+        db_index=True, max_length=12, null=False, blank=False,
         validators=[
             RegexValidator(
-            regex=r"^\d{12}$", 
-            message="شناسه صنفی را بصورت درست وارد نمایید", 
-            code="شناسه صنفی نامعتبر"
+                regex=r"^\d{12}$",
+                message="شناسه صنفی را بصورت درست وارد نمایید",
+                code="شناسه صنفی نامعتبر"
             )
-        ], 
+        ],
         verbose_name="شناسه صنفی"
     )
 
     job_category = models.CharField(
-        max_length=100, null=False, blank=False, 
+        max_length=100, null=False, blank=False,
         verbose_name="رسته صنفی"
     )
 
-    def __str__(self):    
+    def __str__(self):
 
         return self.fc_name
 
@@ -324,4 +333,3 @@ class CollaborationRequest(models.Model):
         verbose_name = "درخواست همکاری"
 
         verbose_name_plural = "درخواست های همکاری"
-
