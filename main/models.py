@@ -333,3 +333,28 @@ class CollaborationRequest(models.Model):
         verbose_name = "درخواست همکاری"
 
         verbose_name_plural = "درخواست های همکاری"
+
+# Create the Branch model that every Food Collection can-
+# has one or more brnches
+
+
+class Branch(models.Model):
+
+    name = models.CharField(
+        db_index=True, max_length=100, null=False, blank=False,
+        verbose_name="نام شعبه"
+    )
+
+    foodCollection = models.ForeignKey(
+        "FoodCollection", on_delete=models.CASCADE,
+        null=False, blank=False, verbose_name="مجموعه غذایی"
+    )
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+
+        verbose_name = "شعبه"
+
+        verbose_name_plural = "شعب"
