@@ -1,3 +1,4 @@
+from enum import unique
 from django.db import models
 from django.contrib.auth.models import (
     AbstractBaseUser, PermissionsMixin
@@ -202,6 +203,13 @@ class FoodCollection(models.Model):
 
     guild_id = models.CharField(
         db_index=True, max_length=12, null=False, blank=False, 
+        validators=[
+            RegexValidator(
+                regex=r"^\d{12}$", 
+                message="شناسه صنفی را بصورت درست وارد نمایید", 
+                code="شناسه صنفی نامعتبر"
+            )
+        ], 
         verbose_name="شناسه صنفی"
     )
 
@@ -229,3 +237,79 @@ class FoodCollection(models.Model):
         verbose_name = "مجموعه غذایی"
 
         verbose_name_plural = "مجموعه های غذایی"
+
+# Create the Collaboration Requests model
+# this model is records from every request 
+class CollaborationRequest(models.Model):
+
+    objects = jmodels.JManager()
+
+    date = jmodels.JDateField(
+        auto_now_add=True, editable=False, 
+        null=False, blank=True, 
+        verbose_name="تاریخ درخواست"
+    )
+
+    applicant_firstname = models.CharField(
+        db_index=True, max_length=50, 
+        null=False, blank=False, 
+        verbose_name="نام متقاضی"
+    )
+
+    applicant_lastname = models.CharField(
+        db_index=True, max_length=50, 
+        null=False, blank=False, 
+        verbose_name="نام خانوادگی متقاضی"
+    )
+
+    applicant_nationalcode = models.CharField(
+        db_index=True, max_length=10, 
+        null=False, blank=False, unique=True, 
+        validators=[
+            RegexValidator(
+                regex=r"^\d{10}$", 
+                message="کد ملی متقاضی به صورت صحیح وارد شود", 
+                code="کد ملی نادرست"
+            )
+        ], 
+        verbose_name="کد ملی"
+    )
+
+    text = models.TextField(
+        max_length=2000, null=True, blank=True, 
+        verbose_name="متن درخواست"
+    )
+
+    fc_name = models.CharField(
+        db_index=True, max_length=50, 
+        null=False, blank=False, 
+        verbose_name="نام مجموعه غذایی"
+    )
+
+    guild_id = models.CharField(
+        db_index=True, max_length=12, null=False, blank=False, 
+        validators=[
+            RegexValidator(
+            regex=r"^\d{12}$", 
+            message="شناسه صنفی را بصورت درست وارد نمایید", 
+            code="شناسه صنفی نامعتبر"
+            )
+        ], 
+        verbose_name="شناسه صنفی"
+    )
+
+    job_category = models.CharField(
+        max_length=100, null=False, blank=False, 
+        verbose_name="رسته صنفی"
+    )
+
+    def __str__(self):    
+
+        return self.fc_name
+
+    class Meta:
+
+        verbose_name = "درخواست همکاری"
+
+        verbose_name_plural = "درخواست های همکاری"
+
