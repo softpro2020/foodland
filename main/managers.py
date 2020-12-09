@@ -31,6 +31,9 @@ class UserManager(BaseUserManager):
             user_type=user_type
         )
 
+        if user_type is 1:
+            user.person == None
+
         user.set_password(password)
 
         user.save(using=self._db)
