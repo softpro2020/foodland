@@ -415,3 +415,41 @@ class CallContact(models.Model):
         verbose_name = "اطلاعات تماس"
 
         verbose_name_plural = "اطلاعات تماس"
+
+# Create the Address model
+# Address model is for record the address information-
+# from every branch of Food Collection
+
+
+class Location(models.Model):
+
+    branch = models.OneToOneField(
+        "Branch", on_delete=models.CASCADE, null=False, blank=False,
+        unique=True, verbose_name="شعبه"
+    )
+
+    province = models.OneToOneField(
+        "Province", on_delete=models.CASCADE, null=False, blank=False,
+        verbose_name="استان"
+    )
+
+    city = models.OneToOneField(
+        "City", on_delete=models.CASCADE, null=False, blank=False,
+        verbose_name="شهر"
+    )
+
+    address = models.CharField(
+        db_index=True, max_length=300, null=False, blank=False,
+        verbose_name="آدرس"
+    )
+
+    def __str__(self):
+        return self.branch.name
+
+    class Meta:
+
+        verbose_name = "موقعیت مکانی"
+
+        verbose_name_plural = "موقعیت های مکانی"
+
+        unique_together = ["province", "city", "address"]
