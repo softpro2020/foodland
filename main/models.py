@@ -53,14 +53,14 @@ class User(AbstractBaseUser, PermissionsMixin):
         verbose_name="فرد مربوطه"
     )
 
-    objects = jmodels.JManager()
+    objects = jmodels.jManager()
 
     date_joined = jmodels.jDateField(
-        auto_now_add=True, editable=False,
+        defualt=jdatetime.date.today, editable=False,
         null=False, blank=True, verbose_name="تاریخ ثبت"
     )
 
-    last_login = jmodels.JDateTimeField(
+    last_login = jmodels.jDateTimeField(
         defualt=jdatetime.datetime.now,
         null=False, blank=True, verbose_name="اخرین ورود"
     )
@@ -215,9 +215,9 @@ class FoodCollection(models.Model):
         verbose_name="شناسه صنفی"
     )
 
-    objects = jmodels.JManager()
+    objects = jmodels.jManager()
 
-    expiration_date = jmodels.JDateField(
+    expiration_date = jmodels.jDateField(
         null=False, blank=False, verbose_name="تاریخ انقضا پروانه کسب"
     )
 
@@ -246,10 +246,10 @@ class FoodCollection(models.Model):
 
 class CollaborationRequest(models.Model):
 
-    objects = jmodels.JManager()
+    objects = jmodels.jManager()
 
-    date = jmodels.JDateField(
-        auto_now_add=True, editable=False,
+    date = jmodels.jDateField(
+        defualt=jdatetime.date.today, editable=False,
         null=False, blank=True,
         verbose_name="تاریخ درخواست"
     )
@@ -488,9 +488,9 @@ class City(models.Model):
 
 class Rate(models.Model):
 
-    objects = jmodels.JManager()
+    objects = jmodels.jManager()
 
-    datetime = jmodels.JDateTimeField(
+    datetime = jmodels.jDateTimeField(
         default=jdatetime.datetime.now, null=False, blank=True,
         editable=False, verbose_name="زمان ثبت"
     )
