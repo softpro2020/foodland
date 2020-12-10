@@ -547,3 +547,45 @@ class Food(models.Model):
         verbose_name = "غذا"
 
         verbose_name_plural = "غذاها"
+
+# Create the Table model
+# every Branch has one or more table
+
+
+class Table(models.Model):
+
+    name = models.CharField(
+        db_index=True, max_length=50, null=False, blank=False,
+        verbose_name = "نام"
+    )
+
+    capacity = models.DecimalField(
+        max_digits=2, null=False, blank=False,
+        verbose_name="ظرفیت"
+    )
+
+    STATE_CHOICES = [
+        (1, "آزاد"),
+        (2, "رزرو شده")
+    ]
+
+    state = models.CharField(
+        db_index=True, max_length=1, null=False, blank=True,
+        default=1, choices=STATE_CHOICES,
+        verbose_name="حالت"
+    )
+
+    branch = models.ForeignKey(
+        "Branch", on_delete=models.CASCADE,
+        null=False, blank=False,
+        verbose_name="مجموعه غذایی"
+    )
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+
+        verbose_name = "میز"
+
+        verbose_name_plural = "میزها"
