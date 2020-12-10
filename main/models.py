@@ -1,3 +1,4 @@
+from unicodedata import name
 from django.db import models
 from django.contrib.auth.models import (
     AbstractBaseUser, PermissionsMixin
@@ -123,34 +124,16 @@ class Customer(models.Model):
         unique=True, verbose_name="شماره تماس"
     )
 
-    province = models.CharField(
-        db_index=True, max_length=50, null=True, blank=True,
-        validators=[
-            RegexValidator(
-                regex=r("^[\s\u0621-\u0628\u062A-\u063A"
-                        "\u0641-\u0642\u0644-\u0648"
-                        "\u064E-\u0651\u0655\u067E\u0686\u0698"
-                        "\u06A9\u06AF\u06BE\u06CC]{3, 50}$"),
-                message="استان را به صورت صحیح وارد نمایید",
-                code="استان نامعتبر",
-            )
-        ],
-        verbose_name="استان"
+    province = models.OneToOneField(
+        "Province", on_delete=models.DO_NOTHING,
+        null=False, blank=False,
+        verbose_name="استان محل سکونت"
     )
 
-    city = models.CharField(
-        db_index=True, max_length=50, null=True, blank=True,
-        validators=[
-            RegexValidator(
-                regex=r("^[\s\u0621-\u0628\u062A-\u063A"
-                        "\u0641-\u0642\u0644-\u0648"
-                        "\u064E-\u0651\u0655\u067E\u0686\u0698"
-                        "\u06A9\u06AF\u06BE\u06CC]{3, 50}$"),
-                message="شهر را به صورت صحیح وارد نمایید",
-                code="شهر نامعتبر",
-            )
-        ],
-        verbose_name="شهر"
+    city = models.OneToOneField(
+        "City", on_delete=models.DO_NOTHING,
+        null=False, blank=False,
+        verbose_name="شهر محل سکونت"
     )
 
     def __str__(self):
@@ -453,3 +436,49 @@ class Location(models.Model):
         verbose_name_plural = "موقعیت های مکانی"
 
         unique_together = ["province", "city", "address"]
+
+# Create the Province model
+
+
+class Provine(models.Model):
+
+    name = models.CharField(
+        db_index=True, max_length=50, null=False, blank=False,
+        unique=True, verbose_name="نام"
+    )
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+
+        verbose_name = "استان"
+
+        verbose_name_plural = "استان ها"
+
+# Create the City models
+# every province has several city
+
+
+class City(models.Model):
+
+    name = models.CharField(
+        db_index=True, max_length=50, null=False, blank=False,
+        verbose_name="نام"
+    )
+
+    provine = models.ForeignKey(
+        "Province", on_delete=models.CASCADE, null=False, blank=False,
+        verbose_name="استان مربوطه"
+    )
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+
+        verbose_name = "شهر"
+
+        verbose_name_plural = "شهر ها"
+
+        unique_together = ["name", "province"]
