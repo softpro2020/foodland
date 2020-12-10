@@ -482,3 +482,37 @@ class City(models.Model):
         verbose_name_plural = "شهر ها"
 
         unique_together = ["name", "province"]
+
+# Create the Rate model 
+# every Branch of Food Collection has rates that customers do them
+
+class Rate(models.Model):
+
+    objects = jmodels.JManager()
+
+    datetime = jmodels.JDateTimeField(
+        default=jdatetime.datetime.now, null=False, blank=True,
+        editable=False, verbose_name="زمان ثبت"
+    )
+
+    title = models.CharField(
+        db_index=True, max_length=100, null=False, blank=False,
+        verbose_name="عنوان"
+    )
+
+    text = models.TextField(
+        max_length=2000, null=False, blank=False,
+        verbose_name="متن"
+    )
+
+    customer = models.ForeignKey(
+        "Customer", on_delete=models.CASCADE,
+        null=False, blank=True,
+        verbose_name="کاربر نظر دهنده"
+    )
+
+    branch = models.ForeignKey(
+        "Branch", on_delete=models.CASCADE,
+        null=False, blank=True,
+        verbose_name="مجموعه غذایی مورد نظر"
+    )
