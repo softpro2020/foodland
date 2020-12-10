@@ -516,3 +516,34 @@ class Rate(models.Model):
         null=False, blank=True,
         verbose_name="مجموعه غذایی مورد نظر"
     )
+
+# Create the Food model
+
+
+class Food(models.Model):
+
+    name = models.CharField(
+        db_index=True, max_length=100,
+        null=False, blank=False,
+        verbose_name="نام غذا"
+    )
+
+    price = models.DecimalField(
+        max_digits=7, null=False, blank=False,
+        verbose_name="قیمت"
+    )
+
+    branch = models.ForeignKey(
+        "Branch", on_delete=models.CASCADE,
+        null=False, blank=False,
+        verbose_name="مجموعه غذایی"
+    )
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+
+        verbose_name = "غذا"
+
+        verbose_name_plural = "غذاها"
