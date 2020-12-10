@@ -589,3 +589,59 @@ class Table(models.Model):
         verbose_name = "میز"
 
         verbose_name_plural = "میزها"
+
+# Create the Order model
+# every customet can order from Food Collection
+
+
+class Order(models.Model):
+
+    objects = jmodels.jManager()
+
+    datetime = jmodels.jDateTimeField(
+        defualt=jdatetime.datetime.now,
+        null=False, blank=True,
+        verbose_name="زمان سفارش"
+    )
+
+    ORDER_TYPE_CHOICES = [
+        (1, "بیرون بر"),
+        (2, "سالن"),
+    ]
+
+    title = models.CharField(
+        db_index=True, max_length=1, null=False, blank=False,
+        choices=ORDER_TYPE_CHOICES, verbose_name="نوع"
+    )
+
+    customer = models.ForeignKey(
+        "Customer", on_delete=models.DO_NOTHING,
+        null=False, blank=False, unique_for_date=datetime,
+        verbose_name="مشتری"
+    )
+
+    branch = models.ForeignKey(
+        "Branch", on_delete=models.CASCADE,
+        null=False, blank=False,
+        verbose_name="مجموعه غذایی"
+    )
+
+    table = models.ForeignKey(
+        "Table", on_delete=models.DO_NOTHING,
+        null=True, blank=True,
+        verbose_name="میز"
+    )
+
+    food = models.ManyToManyField(
+        "Food", on_delete=models.DO_NOTHING,
+        verbose_name="غذا"
+    )
+
+    def __str__(self):
+        return str(self.id), self.customer.user.username
+
+    class Meta:
+
+        verbose_name = "سفارش"
+
+        verbose_name_plural = "سفارشات"
