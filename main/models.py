@@ -3,7 +3,7 @@ from django.db import models
 from django.contrib.auth.models import (
     AbstractBaseUser, PermissionsMixin
 )
-from django_jalali import models as jmodels
+from django_jalali.db import models as jmodels
 import jdatetime
 from . import managers
 from django.core.validators import RegexValidator
@@ -56,12 +56,12 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = jmodels.jManager()
 
     date_joined = jmodels.jDateField(
-        defualt=jdatetime.date.today, editable=False,
+        default=jdatetime.date.today, editable=False,
         null=False, blank=True, verbose_name="تاریخ ثبت"
     )
 
     last_login = jmodels.jDateTimeField(
-        defualt=jdatetime.datetime.now,
+        default=jdatetime.datetime.now,
         null=False, blank=True, verbose_name="اخرین ورود"
     )
 
@@ -249,7 +249,7 @@ class CollaborationRequest(models.Model):
     objects = jmodels.jManager()
 
     date = jmodels.jDateField(
-        defualt=jdatetime.date.today, editable=False,
+        default=jdatetime.date.today, editable=False,
         null=False, blank=True,
         verbose_name="تاریخ درخواست"
     )
@@ -440,7 +440,7 @@ class Location(models.Model):
 # Create the Province model
 
 
-class Provine(models.Model):
+class Province(models.Model):
 
     name = models.CharField(
         db_index=True, max_length=50, null=False, blank=False,
@@ -467,7 +467,7 @@ class City(models.Model):
         verbose_name="نام"
     )
 
-    provine = models.ForeignKey(
+    province = models.ForeignKey(
         "Province", on_delete=models.CASCADE, null=False, blank=False,
         verbose_name="استان مربوطه"
     )
@@ -529,7 +529,7 @@ class Food(models.Model):
     )
 
     price = models.DecimalField(
-        max_digits=7, null=False, blank=False,
+        max_digits=7, decimal_places=0, null=False, blank=False,
         verbose_name="قیمت"
     )
 
@@ -560,7 +560,7 @@ class Table(models.Model):
     )
 
     capacity = models.DecimalField(
-        max_digits=2, null=False, blank=False,
+        max_digits=2, decimal_places=0, null=False, blank=False,
         verbose_name="ظرفیت"
     )
 
@@ -599,7 +599,7 @@ class Order(models.Model):
     objects = jmodels.jManager()
 
     datetime = jmodels.jDateTimeField(
-        defualt=jdatetime.datetime.now,
+        default=jdatetime.datetime.now,
         null=False, blank=True,
         verbose_name="زمان سفارش"
     )
@@ -633,9 +633,13 @@ class Order(models.Model):
     )
 
     food = models.ManyToManyField(
-        "Food", on_delete=models.DO_NOTHING,
+        "Food",
         verbose_name="غذا"
     )
+
+    """def prices(self):
+        queryset = self.food
+        [for query in ]"""
 
     def __str__(self):
         return str(self.id), self.customer.user.username
