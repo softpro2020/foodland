@@ -3,6 +3,7 @@ from django.db import models
 from django.contrib.auth.models import (
     AbstractBaseUser, PermissionsMixin
 )
+from django.db.models.fields.related_descriptors import ForwardOneToOneDescriptor
 from django_jalali.db import models as jmodels
 import jdatetime
 from . import managers
@@ -632,14 +633,16 @@ class Order(models.Model):
         verbose_name="میز"
     )
 
-    food = models.ManyToManyField(
+    foods = models.ManyToManyField(
         "Food",
         verbose_name="غذا"
     )
-
-    """def prices(self):
-        queryset = self.food
-        [for query in ]"""
+    @property
+    def prices(self):
+        foods = self.foods
+        for food in foods:
+            prices += food.price
+        return prices
 
     def __str__(self):
         return str(self.id), self.customer.user.username
