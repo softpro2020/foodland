@@ -32,7 +32,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         default=True, null=False, blank=True, verbose_name="وضعیت"
     )
 
-    is_admin = models.BooleanField(
+    is_superuser = models.BooleanField(
         default=False, null=False, blank=True, verbose_name="ادمین"
     )
 
@@ -80,7 +80,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     # Simplest possible answer: All admins are staff
     @property
     def is_staff(self):
-        return self.is_admin
+        return self.is_superuser
 
     def get_full_name(self):
         return self.username
@@ -88,11 +88,13 @@ class User(AbstractBaseUser, PermissionsMixin):
     def get_short_name(self):
         return self.email
 
-    def has_perm(sels, perm, obj=None):
-        return True
+    def has_perm(self, perm, obj=None):
+        if self.user_type is 5:
+            return True
 
     def has_madule_perms(self, app_label):
-        return True
+        if self.user_type is 5:
+            return True
 
     def __str__(self):
         return self.username
