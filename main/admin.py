@@ -147,5 +147,35 @@ class FoodCollectionAdmin(admin.ModelAdmin):
     list_filter = ('expiration_date',)
     search_fields = ('full_name', 'guild_id')
     fields = (
-        ('full_name', 'guild_id'), ('expiration_date')
+        ('full_name', 'guild_id'),
+        ('expiration_date', 'collaborationRequest'),
+        ('manager'),
     )
+
+# Register the CollaborationRequest model
+
+
+@admin.register(models.CollaborationRequest)
+class CollaborationRequestAdmin(admin.ModelAdmin):
+
+    list_display = ('date', 'applicant_name', 'applicant_nationalcode')
+    list_filter = ('date',)
+    search_fields = (
+        'applicant_firstname', 'aplicant_lastname', 'guild_id'
+    )
+
+    fields = (
+        ('date', 'applicant_firstname', 'applicant_lastname'),
+        ('text'),
+        ('fc_name', 'guild_id', 'job_category'),
+    )
+
+    readonly_fields = (
+        'date', 'applicant_firstname', 'applicant_lastname',
+        'text', 'fc_name', 'guild_id', 'job_category'
+    )
+
+    # this method return the applicant fullname
+    def applicant_name(self, obj):
+        return "{} {}".format(obj.applicant_firstname, obj.applicant_lastname)
+    applicant_name.short_description = "درخواست کننده"

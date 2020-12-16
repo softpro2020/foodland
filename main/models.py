@@ -312,7 +312,7 @@ class CollaborationRequest(models.Model):
 
     def __str__(self):
 
-        return self.fc_name
+        return "{0}{1}".format(self.id, self.fc_name)
 
     class Meta:
 
