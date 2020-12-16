@@ -32,7 +32,7 @@ class UserAdmin(BaseUserAdmin):
     add_fieldsets = (
         ('اطلاعات کاربری', {
         'classes': ('wide','extrapretty'),
-        'fields': ('username', 'password1', 'password2'),
+        'fields': (('username', 'user_type'), 'password1', 'password2'),
         }),
     )
 
