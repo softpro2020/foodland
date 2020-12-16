@@ -91,7 +91,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     def has_perm(sels, perm, obj=None):
         return True
 
-    def has_madule_perms(self, app_lable):
+    def has_madule_perms(self, app_label):
         return True
 
     def __str__(self):
