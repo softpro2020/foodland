@@ -14,7 +14,7 @@ class UserAdmin(BaseUserAdmin):
     # These override the definitions on the base UserAdmin
     # that reference specific fields on auth.User.
     list_display = (
-        'username', 'person', 'lastLogin',
+        'username', 'related_person', 'lastLogin',
         'dateJoined','user_type', 'is_active'
     )
 
@@ -44,10 +44,12 @@ class UserAdmin(BaseUserAdmin):
     readonly_fields = ('last_login', 'date_joined')
 
     # Define this method to return the person first_name and family_name
-    def person(self, obj):
-        return str(obj.person.first_name, obj.person.last_name)
-    person.short_description = "نام و نام خانوادگی"
-    person.admin_order_field = 'person__last_name'
+    def related_person(self, obj):
+        if obj.person:
+            return obj.person.first_name, obj.person.last_name
+    related_person.short_description ='نام و نام خانوادگی'
+    related_person.admin_order_field = 'person__last_name'
+    related_person.empty_value_display = 'تعریف نشده'
 
     # Define this method to return the last_login data in a custom form
     def lastLogin(self, obj):
