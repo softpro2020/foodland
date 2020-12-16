@@ -136,3 +136,16 @@ class PersonAdmin(admin.ModelAdmin):
     )
 
     search_fields = ('first_name', 'last_name', 'national_code')
+
+# Register the FoodCollection model
+
+
+@admin.register(models.FoodCollection)
+class FoodCollectionAdmin(admin.ModelAdmin):
+
+    list_display = ('full_name', 'manager', 'guild_id', 'expiration_date')
+    list_filter = ('expiration_date',)
+    search_fields = ('full_name', 'guild_id')
+    fields = (
+        ('full_name', 'guild_id'), ('expiration_date')
+    )
