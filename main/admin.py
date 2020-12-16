@@ -86,7 +86,7 @@ class CustomerAdmin(admin.ModelAdmin):
     )
 
     fields = (
-        ('user'),('phoneNumber', 'province', 'city')
+        ('user'),('phone_number', 'province', 'city')
     )
 
     list_filter = ('user__is_active', 'province__name')
