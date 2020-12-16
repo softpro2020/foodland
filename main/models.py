@@ -177,8 +177,8 @@ class Person(models.Model):
     )
 
     GENDER_CHOICES = (
-        ('مرد', 'man'),
-        ('زن', 'woman')
+        ('مرد', 'مرد'),
+        ('زن', 'زن')
     )
 
     gender = models.CharField(
@@ -187,7 +187,7 @@ class Person(models.Model):
     )
 
     def __str__(self):
-        return (self.first_name, self.last_name)
+        return "{} {}".format(self.first_name, self.last_name)
 
     class Meta:
 

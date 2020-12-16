@@ -122,3 +122,17 @@ class CustomerAdmin(admin.ModelAdmin):
     def deactivate(self, request, queryset):
         queryset.update(user__is_active=False)
     deactivate.short_description = "غیر فعال کردن"
+
+# Register the Person Model there
+
+
+@admin.register(models.Person)
+class PersonAdmin(admin.ModelAdmin):
+
+    list_display = ('first_name', 'last_name', 'national_code', 'gender')
+    list_filter = ('gender',)
+    fields = (
+        ('first_name', 'last_name'), ('national_code', 'gender')
+    )
+
+    search_fields = ('first_name', 'last_name', 'national_code')
