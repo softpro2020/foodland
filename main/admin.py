@@ -54,10 +54,12 @@ class UserAdmin(BaseUserAdmin):
     # Define this method to return the last_login data in a custom form
     def lastLogin(self, obj):
         return obj.last_login.strftime("%Y/%m/%d - %H:%M:%S")
+    lastLogin.short_description = 'آخرین بازدید'
 
     # Define this method to return the date_joied data in a custom form
     def dateJoined(self, obj):
         return obj.date_joined.strftime("%Y/%m/%d")
+    dateJoined.short_description = 'تاریخ ثبت نام'
 
     # for set an action to the change list page
     # this action is for activating the user
