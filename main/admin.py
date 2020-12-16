@@ -3,14 +3,6 @@ from . import models
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.models import Group
 
-# Define the person inline
-# for adding them on add or edit page of Users
-
-
-class PersonInline(admin.TabularInline):
-
-    model = models.Person
-
 # Register the custom User model
 # it inherit from the internal creation UserAdmin model
 
@@ -48,9 +40,8 @@ class UserAdmin(BaseUserAdmin):
     ordering = ('username', 'date_joined', 'last_login')
     filter_horizontal = ()
     actions = ('activate', 'deactivate')
-    date_hierarchy = 'last_joined'
+    date_hierarchy = 'last_login'
     readonly_fields = ('last_login', 'date_joined')
-    inlines = (PersonInline)
 
     # Define this method to return the person first_name and family_name
     def person(self, obj):

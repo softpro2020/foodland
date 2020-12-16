@@ -70,7 +70,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     Email_Field = "email"
 
-    REQUIRED_FIELDS = [user_type]
+    REQUIRED_FIELDS = []
 
     # relating to custom user manager
     # that is in the managers majule
