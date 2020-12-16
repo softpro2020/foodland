@@ -71,3 +71,49 @@ class UserAdmin(BaseUserAdmin):
 
 # Unregister the Group model from admin
 admin.site.unregister(Group)
+
+# Register the Customer model
+# every Customer is a type of User
+
+
+@admin.register(models.Customer)
+class CustomerAdmin(admin.ModelAdmin):
+
+    list_display = (
+        'related_user', 'related_address', 'lastLogin', 'dateJoined'
+    )
+
+    fields = (
+        ('user'),('phoneNumber', 'province', 'city')
+    )
+
+    list_filter = ('user__is_active', 'province__name')
+    actions = ('activate', 'deactivate')
+
+    # this method return the username of related User
+    def related_user(self, obj):
+        return obj.user.username
+
+    # Define this method to return the last_login data in a custom form
+    def lastLogin(self, obj):
+        return obj.user.last_login.strftime("%Y/%m/%d - %H:%M:%S")
+
+    # Define this method to return the date_joied data in a custom form
+    def dateJoined(self, obj):
+        return obj.user.date_joined.strftime("%Y/%m/%d")
+
+    # return the related province name 
+    def related_address(self, obj):
+        return str(obj.province.name, obj.city.name)
+
+    # for set an action to the change list page
+    # this action is for activating the related user
+    def activate(self, request, queryset):
+        queryset.update(user__is_active=True)
+    activate.short_description = "فعال کردن"
+
+    # for set an action to the change list page
+    # this action is for deactivating the related user
+    def deactivate(self, request, queryset):
+        queryset.update(user__is_active=False)
+    deactivate.short_description = "غیر فعال کردن"
