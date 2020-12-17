@@ -336,6 +336,16 @@ class Branch(models.Model):
         null=False, blank=False, verbose_name="مجموعه غذایی"
     )
 
+    branchManager = models.OneToOneField(
+        "User", on_delete=models.CASCADE, null=False, blank=False,
+        related_name="manager", verbose_name="مدیر شعبه"
+    )
+
+    branchCashier = models.OneToOneField(
+        "User", on_delete=models.CASCADE, null=False, blank=False,
+        related_name="cashier", verbose_name="صندوقدار شعبه"
+    )
+
     def __str__(self):
         return self.name
 
