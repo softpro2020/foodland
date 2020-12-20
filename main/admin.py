@@ -137,6 +137,13 @@ class PersonAdmin(admin.ModelAdmin):
 
     search_fields = ('first_name', 'last_name', 'national_code')
 
+# Define the Branch inline for show the Branches of every FoodCollection
+
+
+class BranchInline(admin.StackedInline):
+    model = models.Branch
+    extra = 2
+
 # Register the FoodCollection model
 
 
@@ -151,6 +158,10 @@ class FoodCollectionAdmin(admin.ModelAdmin):
         ('expiration_date', 'collaborationRequest'),
         ('manager'),
     )
+
+    inlines = [
+        BranchInline,
+    ]
 
 # Register the CollaborationRequest model
 
@@ -179,3 +190,25 @@ class CollaborationRequestAdmin(admin.ModelAdmin):
     def applicant_name(self, obj):
         return "{} {}".format(obj.applicant_firstname, obj.applicant_lastname)
     applicant_name.short_description = "درخواست کننده"
+
+# Register the Branch model
+
+
+@admin.register(models.Branch)
+class BranchAdmin(admin.ModelAdmin):
+
+    list_display = (
+        'name', 'foodCollection', 'branchManager', 'branchCashier'
+    )
+
+    list_filter = (
+        'foodCollection',
+        'branchManager__user_type', 'branchCashier__user_type'
+    )
+
+    search_fields = ('name', 'foodCollection__full_name')
+    fieldsets = (
+        (None, {'fields':
+        ('name', 'foodCollection', 'branchManager', 'branchCashier'),
+        }),
+    )
