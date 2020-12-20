@@ -78,7 +78,7 @@ WSGI_APPLICATION = 'foodland.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'foodland',
+        'NAME': 'foodland_db',
         'USER': 'postgres',
         'PASSWORD': 'A13742301374230a',
         'HOST': 'localhost',
