@@ -583,8 +583,8 @@ class Table(models.Model):
         verbose_name = "نام"
     )
 
-    capacity = models.DecimalField(
-        max_digits=2, decimal_places=0, null=False, blank=False,
+    capacity = models.PositiveSmallIntegerField(
+        null=False, blank=False,
         verbose_name="ظرفیت"
     )
 
