@@ -7,7 +7,7 @@ from django.db.models.fields.related_descriptors import ForwardOneToOneDescripto
 from django_jalali.db import models as jmodels
 import jdatetime
 from . import managers
-from django.core.validators import RegexValidator
+from django.core.validators import MaxValueValidator, MinValueValidator, RegexValidator
 
 # Create your models here.
 
@@ -552,9 +552,13 @@ class Food(models.Model):
         verbose_name="نام غذا"
     )
 
-    price = models.DecimalField(
-        max_digits=7, decimal_places=0, null=False, blank=False,
-        verbose_name="قیمت"
+    price = models.PositiveIntegerField(
+        validators=[
+            MinValueValidator(limit_value=1000),
+            MaxValueValidator(limit_value=1000000),
+        ],
+        null=False, blank=False, 
+        verbose_name="قیمت(ریال)"
     )
 
     branch = models.ForeignKey(
