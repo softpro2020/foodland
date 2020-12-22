@@ -228,3 +228,74 @@ class CallContactAdmin(admin.ModelAdmin):
     fields = (
         'branch', ('phoneNumber1', 'phoneNumber2'), 'mobileNumber'
     )
+
+# Register the Location model
+
+
+@admin.register(models.Location)
+class LocationAdmin(admin.ModelAdmin):
+
+    list_display = (
+        'showBranch', 'showProvince', 'showCity'
+    )
+
+    list_filter = ('province__name', 'city__name')
+    search_fields = (
+        'branch__name', 'province__name', 'city__name'
+    )
+
+    fields = (
+        'branch', ('province', 'city'), 'address'
+    )
+
+    # this methos return the name of related branch
+    def showBranch(self, obj):
+        return obj.branch.name
+    showBranch.short_description = 'شعبه مربوطه'
+
+    # this method return the name of province
+    def showProvince(self, obj):
+        return obj.province.name
+    showProvince.short_description = 'استان مربوطه'
+    
+    # this method return the name of city
+    def showCity(self, obj):
+        return obj.city.name
+    showCity.short_description = 'شهر مربوطه'
+
+
+# Register the City model
+
+
+@admin.register(models.City)
+class CityAdmin(admin.ModelAdmin):
+
+    list_display = ('__str__', 'showProvince')
+    list_filter = ('province__name',)
+    search_fields = ('name', 'province__name')
+    fields = ('name', 'province')
+    
+    # this method return the name of provinces
+    def showProvince(self, obj):
+        return obj.province.name
+    showProvince.short_description = 'استان مربوطه'
+
+# Define the CityInline for inlining to Province
+
+
+class CityInline(admin.TabularInline):
+
+    model = models.City
+    extra = 20
+
+# Register the Province model
+
+
+@admin.register(models.Province)
+class ProvinceAdmin(admin.ModelAdmin):
+
+    list_display = ('__str__',)
+    list_filter = ()
+    search_fields = ('name', 'city__name')
+    fields = ('name',)
+    inlines = (CityInline,)
