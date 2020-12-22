@@ -133,7 +133,7 @@ class Customer(models.Model):
         verbose_name="استان محل سکونت"
     )
 
-    city = models.OneToOneField(
+    city = models.ForeignKey(
         "City", on_delete=models.DO_NOTHING,
         null=False, blank=False,
         verbose_name="شهر محل سکونت"
