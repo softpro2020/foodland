@@ -593,8 +593,8 @@ class Table(models.Model):
         (2, "رزرو شده")
     ]
 
-    state = models.CharField(
-        db_index=True, max_length=1, null=False, blank=True,
+    state = models.PositiveSmallIntegerField(
+        null=False, blank=True,
         default=1, choices=STATE_CHOICES,
         verbose_name="حالت"
     )
