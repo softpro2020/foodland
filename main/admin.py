@@ -381,3 +381,14 @@ class TableAdmin(admin.ModelAdmin):
     def changeStateToUnreserved(self, request, queryset):
         queryset.update(state=1)
     changeStateToUnreserved.short_description = 'آزاد'
+
+# Register the Food Model
+
+
+@admin.register(models.Food)
+class FoodAdmin(admin.ModelAdmin):
+
+    list_display = ('name', 'price', 'branch')
+    list_filter = ('branch',)
+    search_fields = ('name', 'branch__name')
+    fields = ('name', 'price', 'branch')
