@@ -299,3 +299,60 @@ class ProvinceAdmin(admin.ModelAdmin):
     search_fields = ('name', 'city__name')
     fields = ('name',)
     inlines = (CityInline,)
+
+# Register the Rate model
+
+
+@admin.register(models.Rate)
+class RateAdmin(admin.ModelAdmin):
+
+    list_display = (
+        '__str__', 'title', 'datetime'
+    )
+
+    list_filter = (
+        'title', 'datetime', 'customer',
+        'branch__name'
+    )
+
+    search_fields = (
+        'title', 'customer__user__username', 'branch__name'
+    )
+
+    fieldsets = (
+        (None, {
+            'fields': (('datetime', 'title'), ('text')),
+            'classes': ('wide', 'extrapretty'),
+            }
+        ),
+        ('اطلاعات نظر دهنده', {
+            'fields': ('customer', 'customerUsername'),
+        }),
+        ('شعبه مورد نظر', {
+            'fields': ('branch', 'branchName'),
+        }),
+    )
+
+    readonly_fields = (
+        'datetime', 'customerUsername', 'branchName'
+    )
+
+    add_fieldsets = (
+        (None, {
+            'fields': (
+            ('datetime', 'title'), 'text', ('customer', 'branch')
+            ), 
+            'classes': ('wide', 'extrapretty'),
+            }
+        ),
+    )
+
+    # return the name of branch
+    def branchName(self, obj):
+        return obj.branch.name
+    branchName.short_description = 'نام شعبه'
+
+    # return the username of customer
+    def customerUsername(self, obj):
+        return obj.customer.user.username
+    customerUsername.short_description = 'نام کاربری مشتری'
