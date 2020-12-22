@@ -356,3 +356,28 @@ class RateAdmin(admin.ModelAdmin):
     def customerUsername(self, obj):
         return obj.customer.user.username
     customerUsername.short_description = 'نام کاربری مشتری'
+
+# Register the Table model
+
+
+@admin.register(models.Table)
+class TableAdmin(admin.ModelAdmin):
+
+    list_display = (
+        'name', 'capacity', 'state', 'branch'
+    )
+
+    list_filter = ('capacity', 'state', 'branch')
+    search_fields = ('name', 'branch__name')
+    fields = ('name', 'capacity', 'state', 'branch')
+    actions = ('changeStateToReserved','changeStateToUnreserved')
+
+    # define the state changer to reserved
+    def changeStateToReserved(self, request, queryset):
+        queryset.update(state=2)
+    changeStateToReserved.short_description = 'رزرو'
+
+    # define the state changer to unreserved
+    def changeStateToUnreserved(self, request, queryset):
+        queryset.update(state=1)
+    changeStateToUnreserved.short_description = 'آزاد'
