@@ -644,7 +644,7 @@ class Order(models.Model):
 
     customer = models.ForeignKey(
         "Customer", on_delete=models.DO_NOTHING,
-        null=False, blank=False, unique_for_date=datetime,
+        null=False, blank=False, unique_for_date='datetime',
         verbose_name="مشتری"
     )
 
