@@ -212,3 +212,19 @@ class BranchAdmin(admin.ModelAdmin):
         ('name', 'foodCollection', 'branchManager', 'branchCashier'),
         }),
     )
+
+# Register the CallContact model
+
+
+@admin.register(models.CallContact)
+class CallContactAdmin(admin.ModelAdmin):
+
+    list_display = (
+        '__str__', 'phoneNumber1', 'phoneNumber2', 'mobileNumber'
+    )
+
+    list_filter = ()
+    search_fields = ('branch__name',)
+    fields = (
+        'branch', ('phoneNumber1', 'phoneNumber2'), 'mobileNumber'
+    )
