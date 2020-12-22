@@ -672,7 +672,7 @@ class Order(models.Model):
         return prices
 
     def __str__(self):
-        return str(self.id), self.customer.user.username
+        return "{1} -> {0}".format(self.branch.name, self.customer.user.username)
 
     class Meta:
 
