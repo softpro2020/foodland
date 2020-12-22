@@ -637,8 +637,8 @@ class Order(models.Model):
         (2, "سالن"),
     ]
 
-    title = models.CharField(
-        db_index=True, max_length=1, null=False, blank=False,
+    title = models.PositiveSmallIntegerField(
+        null=False, blank=False,
         choices=ORDER_TYPE_CHOICES, verbose_name="نوع"
     )
 
