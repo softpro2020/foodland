@@ -127,7 +127,7 @@ class Customer(models.Model):
         unique=True, verbose_name="شماره تماس"
     )
 
-    province = models.OneToOneField(
+    province = models.ForeignKey(
         "Province", on_delete=models.DO_NOTHING,
         null=False, blank=False,
         verbose_name="استان محل سکونت"
