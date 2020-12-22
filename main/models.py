@@ -424,12 +424,12 @@ class Location(models.Model):
         unique=True, verbose_name="شعبه"
     )
 
-    province = models.OneToOneField(
+    province = models.ForeignKey(
         "Province", on_delete=models.CASCADE, null=False, blank=False,
         verbose_name="استان"
     )
 
-    city = models.OneToOneField(
+    city = models.ForeignKey(
         "City", on_delete=models.CASCADE, null=False, blank=False,
         verbose_name="شهر"
     )
