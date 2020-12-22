@@ -530,6 +530,17 @@ class Rate(models.Model):
         verbose_name="مجموعه غذایی مورد نظر"
     )
 
+    def __str__(self):
+        return "{0} -> {1}".format(
+            self.customer.user.username, self.branch.name
+        )
+    
+    class Meta:
+
+        verbose_name = "نظر"
+
+        verbose_name_plural = "نظرات"
+
 # Create the Food model
 
 
