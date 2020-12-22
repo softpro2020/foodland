@@ -98,18 +98,22 @@ class CustomerAdmin(admin.ModelAdmin):
     # this method return the username of related User
     def related_user(self, obj):
         return obj.user.username
+    related_user.short_description = 'کاربر'
 
     # Define this method to return the last_login data in a custom form
     def lastLogin(self, obj):
         return obj.user.last_login.strftime("%Y/%m/%d - %H:%M:%S")
+    lastLogin.short_description = 'آخرین ورود'
 
     # Define this method to return the date_joied data in a custom form
     def dateJoined(self, obj):
         return obj.user.date_joined.strftime("%Y/%m/%d")
+    dateJoined.short_description = 'تاریخ ثبت نام'
 
     # return the related province name 
     def related_address(self, obj):
-        return str(obj.province.name, obj.city.name)
+        return obj.province.name, obj.city.name
+    related_address.short_description = 'مکان'
 
     # for set an action to the change list page
     # this action is for activating the related user
@@ -392,3 +396,18 @@ class FoodAdmin(admin.ModelAdmin):
     list_filter = ('branch',)
     search_fields = ('name', 'branch__name')
     fields = ('name', 'price', 'branch')
+
+# Register the Order models of customers
+# every customer can order many time from a Branch
+
+
+@admin.register(models.Order)
+class OrderAdmin(admin.ModelAdmin):
+
+    list_display = (
+        'customer', 'branch', 'title', 'datetime', 'table'
+    )
+    list_filter = ('datetime', 'title')
+    search_fields = ('customer__user__username', 'branch__name')
+    fields = ('datetime', 'title', 'customer', 'branch', 'foods')
+    readonly_fields = ('datetime',)
